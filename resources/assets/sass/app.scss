@@ -1,0 +1,17 @@
+
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+//Parts
+@import "parts/blog-home.css";
+@import "parts/blog-post.css";
+
+.btn {
+  cursor: pointer;
+}
