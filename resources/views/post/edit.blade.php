@@ -24,7 +24,9 @@
         <label for="example-3" class="col-2 col-form-label">Category</label>
         <div class="col-10">
             <select class="form-control" type="sele" id="example-3" name="category_id">
-                <option value="{{$post->category()->first()->id}}">{{$post->category()->first()->name}}</option>
+                @if(isset($post->category()->first()->id))
+                    <option value="{{$post->category()->first()->id}}">{{$post->category()->first()->name}}</option>
+                @endif
                 <option value="">--Without category--</option>
                 @foreach($categories as $category)
                     @if($category->id == $post->category_id)
