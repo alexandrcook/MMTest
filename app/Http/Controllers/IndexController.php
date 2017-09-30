@@ -12,7 +12,7 @@ class IndexController extends Controller
         return view('blog',
             [
                 'categories' => Category::all(),
-                'posts' => Post::orderBy('created_at', 'desc')->get(),
+                'posts' => Post::orderBy('created_at', 'desc')->paginate(10),
                 'sessions' => Session::all()
             ]
         );

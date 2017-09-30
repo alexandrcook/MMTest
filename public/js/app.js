@@ -841,8 +841,18 @@ $(document).on('click', '#ajax-leave-comment', function (event) {
                 $this.parent('form').find("input[type=reset]").trigger('click');
             }
         },
-        error: function error(err) {
-            console.log(err);
+        error: function error(data) {
+
+            var errors = data.responseJSON;
+            var errorEl = '';
+            $.each(errors['error'], function (key, value) {
+                errorEl = errorEl + '<li>' + value + '</li>';
+            });
+
+            var el = '<div class="alert alert-danger">' + '<ul class="container"> ' + errorEl + '</ul>' + '</div>';
+
+            $('#laravel-errors').html('');
+            $(el).appendTo($('#comment-errors'));
         }
     });
 });

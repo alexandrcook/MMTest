@@ -66,6 +66,8 @@
         <div class="card my-4">
             <h5 class="card-header">Leave a Comment:</h5>
             <div class="card-body">
+                <div id="comment-errors">
+                </div>
                 <form action="{{route('comment')}}" method="post">
                     {{ csrf_field() }}
                     <input style="display: none" type="reset">

@@ -40,6 +40,12 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+           'name' => 'required',
+            'content' => 'required',
+            'file' => 'required|max: 2048'
+        ]);
+
         $post = new Post();
         $post->name = $request->input('name');
         $post->content = $request->input('content');
@@ -94,6 +100,12 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        $request->validate([
+            'name' => 'required',
+            'content' => 'required',
+            'file' => 'required|max: 2048'
+        ]);
+
         $post->name = $request->input('name');
         $post->content = $request->input('content');
         $post->category_id = $request->input('category_id');

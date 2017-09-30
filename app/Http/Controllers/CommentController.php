@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use Validator;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -36,27 +37,31 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         if ($request->ajax()) {
-            $comment = new Comment();
-            $comment->author = $request->input('author');
-            $comment->content = $request->input('content');
-            $comment->post_id = $request->input('post_id');
-            $comment->category_id = $request->input('category_id');
-            $comment->save();
+            $validator = Validator::make($request->all(), [
+                'author' => array(
+                    'required',
+                    "regex: /([A-Z][a-z]+\s+[A-Z][a-z]+)/"
+                ),
+                'content' => 'required',
+            ]);
+            if ($validator->passes()) {
 
-            return response()->json(
-                [
-                    'responseText' => 'Success!',
-                    'created_at' => $comment->created_at->format('Y-m-d H:i:s')
-                ]
-            );
+                $comment = new Comment();
+                $comment->author = $request->input('author');
+                $comment->content = $request->input('content');
+                $comment->post_id = $request->input('post_id');
+                $comment->category_id = $request->input('category_id');
+                $comment->save();
 
-        } else {
-            $comment = new Comment();
-            $comment->author = $request->input('author');
-            $comment->content = $request->input('content');
-            $comment->post_id = $request->input('post_id');
-            $comment->category_id = $request->input('category_id');
-            $comment->save();
+                return response()->json(
+                    [
+                        'responseText' => 'Success!',
+                        'created_at' => $comment->created_at->format('Y-m-d H:i:s')
+                    ]
+                );
+            } else {
+                return response()->json(['error' => $validator->errors()->all()], 400);
+            }
         }
 
 
