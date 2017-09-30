@@ -16,6 +16,7 @@ class CreateSessionsTable extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user');
+            $table->string('session_identifier');
             $table->string('ip');
             $table->string('browser');
             $table->timestamps();

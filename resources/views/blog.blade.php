@@ -45,6 +45,9 @@
             <li class="page-item">
                 <a class="page-link" href="#">&larr; Older</a>
             </li>
+
+
+
             <li class="page-item disabled">
                 <a class="page-link" href="#">Newer &rarr;</a>
             </li>
@@ -127,10 +130,21 @@
 
         <!-- Side Widget -->
         <div class="card my-4">
-            <h5 class="card-header">Side Widget</h5>
+            <h5 class="card-header">Browser Info</h5>
             <div class="card-body">
-                You can put anything you want inside of these side widgets. They are easy to use, and feature the
-                new Bootstrap 4 card containers!
+                <div class="row">
+                    <div class="col">
+                        <ul class="list-unstyled mb-0">
+                            @foreach($sessions->groupBy('browser') as $key => $browsColl)
+                                <li>
+                                    <h5>{{$key}}</h5>
+                                    {{$browsColl->groupBy('user')->first()->count()}} session(s)
+                                    <hr>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
