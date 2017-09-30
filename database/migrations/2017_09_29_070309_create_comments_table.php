@@ -17,8 +17,8 @@ class CreateCommentsTable extends Migration
             $table->increments('id');
             $table->string('author');
             $table->string('content');
-            $table->integer('post_id');
-            $table->integer('category_id');
+            $table->integer('post_id')->nullable();
+            $table->integer('category_id')->nullable();
             $table->timestamps();
         });
     }
