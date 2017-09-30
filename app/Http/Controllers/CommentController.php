@@ -40,6 +40,7 @@ class CommentController extends Controller
             $comment->author = $request->input('author');
             $comment->content = $request->input('content');
             $comment->post_id = $request->input('post_id');
+            $comment->category_id = $request->input('category_id');
             $comment->save();
 
             return response()->json(
@@ -54,6 +55,7 @@ class CommentController extends Controller
             $comment->author = $request->input('author');
             $comment->content = $request->input('content');
             $comment->post_id = $request->input('post_id');
+            $comment->category_id = $request->input('category_id');
             $comment->save();
         }
 

@@ -810,13 +810,12 @@ window.Popper = __webpack_require__(35).default; // FIX
 
 //Comment
 
+
 $(document).on('click', '#ajax-leave-comment', function (event) {
     event.preventDefault();
     var url,
         method,
         data,
-        quarter_num,
-        status,
         author,
         content,
         $this = $(this);

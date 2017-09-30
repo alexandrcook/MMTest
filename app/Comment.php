@@ -10,4 +10,8 @@ class Comment extends Model
     {
         return $this->belongsTo('App\Post');
     }
+    public function category()
+    {
+        return $this->belongsTo('App\Category');
+    }
 }
