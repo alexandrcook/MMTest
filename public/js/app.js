@@ -838,6 +838,7 @@ $(document).on('click', '#ajax-leave-comment', function (event) {
                 var el = '<div class="media mb-4">' + '<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">' + '<div class="media-body">' + '<h5 class="mt-0 d-inline">' + author + '</h5> <span>(at ' + data.created_at + ')</span>' + '<p>' + content + '</p>' + '</div>' + '</div>';
                 $(el).prependTo('#post-comments');
 
+                $('#comment-errors').html('');
                 $this.parent('form').find("input[type=reset]").trigger('click');
             }
         },
@@ -851,7 +852,7 @@ $(document).on('click', '#ajax-leave-comment', function (event) {
 
             var el = '<div class="alert alert-danger">' + '<ul class="container"> ' + errorEl + '</ul>' + '</div>';
 
-            $('#laravel-errors').html('');
+            $('#comment-errors').html('');
             $(el).appendTo($('#comment-errors'));
         }
     });

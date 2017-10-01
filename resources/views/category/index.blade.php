@@ -7,17 +7,15 @@
     @foreach($categories as $category)
         <li class="list-group-item">
             <a href="{{route('category.show', ['id' => $category->id])}}">
-            {{$category->name}}
+                {{$category->name}}
             </a>
         </li>
     @endforeach
-
-    <li class="list-group-item list-group-item-success">
-        <a href="/category/create">Create new</a>
-    </li>
 </ul>
 
-<hr>
+<div class="card-body" style="text-align: center">
+    <a class="btn btn-success" href="/category/create">Create new</a>
+</div>
 
 
 @include('parts.end')

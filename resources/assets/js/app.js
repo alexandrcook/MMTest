@@ -62,6 +62,7 @@ $(document).on('click', '#ajax-leave-comment', function (event) {
                         '</div>';
                 $(el).prependTo('#post-comments');
 
+                $('#comment-errors').html('');
                 $this.parent('form').find("input[type=reset]").trigger('click');
             }
         },
@@ -77,7 +78,7 @@ $(document).on('click', '#ajax-leave-comment', function (event) {
                         '<ul class="container"> '+ errorEl +'</ul>'+
                 '</div>';
 
-            $('#laravel-errors').html('');
+            $('#comment-errors').html('');
             $(el).appendTo($('#comment-errors'));
         }
     })

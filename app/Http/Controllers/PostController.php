@@ -43,7 +43,7 @@ class PostController extends Controller
         $request->validate([
            'name' => 'required',
             'content' => 'required',
-            'file' => 'required|max: 2048'
+            'file' => 'required|image|max: 2048'
         ]);
 
         $post = new Post();
@@ -103,7 +103,7 @@ class PostController extends Controller
         $request->validate([
             'name' => 'required',
             'content' => 'required',
-            'file' => 'required|max: 2048'
+            'file' => 'required|image|max: 2048'
         ]);
 
         $post->name = $request->input('name');
