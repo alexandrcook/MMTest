@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\Post;
+use App\{Category, Post};
+use Illuminate\Database\Connection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -41,21 +42,34 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-           'name' => 'required',
+            'name' => 'required',
             'content' => 'required',
             'file' => 'required|image|max: 2048'
         ]);
 
-        $post = new Post();
-        $post->name = $request->input('name');
-        $post->content = $request->input('content');
-        $post->category_id = $request->input('category_id');
-        $post->save();
+        $connection = new Connection(DB::connection()->getPdo()); //???
+        $connection->beginTransaction();
 
-        $file = $request->file()['file'];
-        $file->storeAs('posts/', 'post_' . $post->id . '_img' . '.' . $file->getClientOriginalExtension() . '');
-        $post->file = 'post_' . $post->id . '_img' . '.' . $file->getClientOriginalExtension() . '';
-        $post->save();
+        try {
+            $post = new Post();
+            $post->name = $request->input('name');
+            $post->content = $request->input('content');
+            $post->category_id = $request->input('category_id');
+            $post->save();
+
+            $file = $request->file()['file'];
+            $file->storeAs('posts/', 'post_' . $post->id . '_img' . '.' . $file->getClientOriginalExtension() . '');
+            $post->file = 'post_' . $post->id . '_img' . '.' . $file->getClientOriginalExtension() . '';
+            $post->save();
+
+            $request->session()->flash('message', 'Post create successful!');
+            $request->session()->flash('alert-type', 'success');
+            $connection->commit();
+        } catch (\Exception $e) {
+            $request->session()->flash('message', $e->getMessage());;
+            $request->session()->flash('alert-type', 'danger');
+            $connection->rollBack();
+        }
 
         return redirect(route('main'));
     }
@@ -106,18 +120,27 @@ class PostController extends Controller
             'file' => 'required|image|max: 2048'
         ]);
 
-        $post->name = $request->input('name');
-        $post->content = $request->input('content');
-        $post->category_id = $request->input('category_id');
-        $post->save();
-
-        if ($request->file()) {
-            $file = $request->file()['file'];
-            $file->storeAs('posts/', 'post_' . $post->id . '_img' . '.' . $file->getClientOriginalExtension() . '');
-            $post->file = 'post_' . $post->id . '_img' . '.' . $file->getClientOriginalExtension() . '';
+        $connection = new Connection(DB::connection()->getPdo()); //???
+        $connection->beginTransaction();
+        try {
+            $post->name = $request->input('name');
+            $post->content = $request->input('content');
+            $post->category_id = $request->input('category_id');
             $post->save();
+            if ($request->file()) {
+                $file = $request->file()['file'];
+                $file->storeAs('posts/', 'post_' . $post->id . '_img' . '.' . $file->getClientOriginalExtension() . '');
+                $post->file = 'post_' . $post->id . '_img' . '.' . $file->getClientOriginalExtension() . '';
+                $post->save();
+            }
+            $request->session()->flash('message', 'Post update successful!');
+            $request->session()->flash('alert-type', 'success');
+            $connection->commit();
+        } catch (\Exception $e) {
+            $request->session()->flash('message', $e->getMessage());;
+            $request->session()->flash('alert-type', 'danger');
+            $connection->rollBack();
         }
-
         return redirect(route('main'));
     }
 
@@ -127,9 +150,13 @@ class PostController extends Controller
      * @param  \App\Post $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy(Request $request, Post $post)
     {
         $post->delete();
+
+        $request->session()->flash('message', 'Post delete successful!');
+        $request->session()->flash('alert-type', 'danger');
+
         return redirect(route('main'));
     }
 }

@@ -18,6 +18,14 @@
 @include('parts.navigation')
 
 <body>
+<div class="container">
+<div id="session-message">
+    @if(Session::has('message'))
+        <div class="alert @if(Session::has('alert-type'))alert-{{Session::get('alert-type')}}@else alert-info @endif">
+            <strong>Alert</strong> {{Session::get('message')}}
+        </div>
+    @endif
+</div>
 <div id="laravel-errors">
 @if (count($errors) > 0)
     <div class="alert alert-danger">
@@ -32,4 +40,3 @@
 
 
 
-<div class="container">

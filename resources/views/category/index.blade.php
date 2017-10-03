@@ -14,7 +14,7 @@
 </ul>
 
 <div class="card-body" style="text-align: center">
-    <a class="btn btn-success" href="/category/create">Create new</a>
+    <a class="btn btn-success" href="{{route('category.create')}}">Create new</a>
 </div>
 
 

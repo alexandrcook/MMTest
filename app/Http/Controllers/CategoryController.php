@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\{Category,Post};
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Connection;
 
 class CategoryController extends Controller
 {
@@ -48,6 +50,10 @@ class CategoryController extends Controller
         $category->name = $request->input('name');
         $category->description = $request->input('description');
         $category->save();
+
+        $request->session()->flash('message', 'Category create successful!');
+        $request->session()->flash('alert-type', 'success');
+
         return redirect('category');
     }
 
@@ -109,11 +115,24 @@ class CategoryController extends Controller
      * @param  \App\Category $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Request $request, Category $category)
     {
-        Post::where('category_id', $category->id)->update(['category_id' => null]);
 
-        $category->delete();
+        $connection = new Connection(DB::connection()->getPdo()); //???
+        $connection->beginTransaction();
+        try {
+            Post::where('category_id', $category->id)->update(['category_id' => null]);
+            $category->delete();
+
+            $request->session()->flash('message', 'Category delete successful!');
+            $request->session()->flash('alert-type', 'success');
+            $connection->commit();
+        } catch (\Exception $e) {
+            $request->session()->flash('message', $e->getMessage());;
+            $request->session()->flash('alert-type', 'danger');
+            $connection->rollBack();
+        }
+
         return redirect(route('main'));
     }
 }
